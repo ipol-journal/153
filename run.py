@@ -5,15 +5,15 @@ import argparse
 
 # parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("transform_type", type=str)
-ap.add_argument("robust", type=str)
+ap.add_argument("transform_type", type=int)
+ap.add_argument("robust", type=int)
 ap.add_argument("lambd", type=int)
 ap.add_argument("scales", type=int)
 ap.add_argument("zfactor", type=float)
 ap.add_argument("epsilon", type=float)
 ap.add_argument("sigma", type=int)
-
 args = ap.parse_args()
+
 
 #run algo
 p0 = subprocess.run(['add_noise', 'input_0.png', 'input_0.png', str(args.sigma)])
