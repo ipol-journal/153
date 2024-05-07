@@ -2,7 +2,6 @@
 
 import subprocess
 import argparse
-from tabulate import tabulate
 
 # parse the arguments
 ap = argparse.ArgumentParser()
@@ -49,17 +48,27 @@ else:
     # Assign difference value of -1 if both sets of values are not equal
     difference = "-"
 
-# create header
+
+# Create header
 head = ["Transformation", "Computed transformation (p)", "Ground truth transformation (p')", "Error |p'-p|"]
 
-# assign data
+# Assign data
 mydata = [
     ["Homography: (h00, h01,..., h21)", computed_trans, gT_trans, difference]
 ]
 
-#display table1
+# Find maximum width for each column
+max_widths = [max(len(str(x)) for x in column) for column in zip(*mydata, head)]
+
+# Display table
 with open('table1.txt', 'w') as file:
-  file.write(tabulate(mydata, headers=head, tablefmt="grid", numalign="center"))
+    # Write header
+    file.write("|".join(head) + "\n")
+    file.write("|".join("-" * width for width in max_widths) + "\n")
+
+    # Write data rows
+    for row in mydata:
+        file.write("|".join(str(cell).ljust(width) for cell, width in zip(row, max_widths)) + "\n")
 
 
 with open('stdout.txt', 'r') as f:
@@ -70,17 +79,27 @@ with open('stdout.txt', 'r') as f:
     computed_matrix = content[13].split('=')[1].split()
     gt_matrix = content[14].split('=')[1].split()
 
-# create header2
+
+# Create header2
 head = ["", "Added noise", "RMSE", "Error d(Hgtxi,Hxi)", "Time"]
 
-# assign data2
+# Assign data2
 mydata = [
     ["Results", args.sigma, RMSE, Error, Time]
 ]
 
-#display table2
+# Find maximum width for each column
+max_widths = [max(len(str(x)) for x in column) for column in zip(*mydata, head)]
+
+# Display table2
 with open('table2.txt', 'w') as file:
-  file.write(tabulate(mydata, headers=head, tablefmt="grid", numalign="center"))
+    # Write header2
+    file.write("|".join(head) + "\n")
+    file.write("|".join("-" * width for width in max_widths) + "\n")
+
+    # Write data2 rows
+    for row in mydata:
+        file.write("|".join(str(cell).ljust(width) for cell, width in zip(row, max_widths)) + "\n")
 
 
 # Format the matrix values
