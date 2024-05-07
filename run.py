@@ -29,7 +29,7 @@ p3 = subprocess.run(['generate_output', 'input_0.png', 'input_1.png', 'transform
                     str(args.robust), str(args.lambd)])
 
 
-with open('transform.mat', 'r') as f, open('mat_0.mat', 'r') as f1:
+with open('transform.mat', 'r') as f, open('input_2.mat', 'r') as f1:
     computed_trans = f.readlines()[1]
     gT_trans = f1.readlines()[1]
 
