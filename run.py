@@ -59,8 +59,7 @@ try:
         with open('input_2.mat', 'r') as f:
             gT_trans = f.readlines()[1]
 except UnicodeDecodeError:
-    gT_trans = "2 \n -N/A -"
-
+    gT_trans = ""
 
 
 with open('transform.mat', 'r') as f1:
