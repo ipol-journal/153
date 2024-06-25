@@ -3,6 +3,8 @@
 import subprocess
 import argparse
 import sys
+import os
+from PIL import Image
 tabulate_path = "/usr/lib/python3/dist-packages"
 sys.path.append(tabulate_path)
 from tabulate import tabulate
@@ -18,6 +20,19 @@ ap.add_argument("zfactor", type=float)
 ap.add_argument("epsilon", type=float)
 ap.add_argument("sigma", type=int)
 args = ap.parse_args()
+
+# Error: bad parameters. Input images must have the same size: 584x388 - 512x512 
+
+img1 = Image.open('input_0.png')
+img2 = Image.open('input_1.png')
+    
+if img1.size[0] != img2.size[0] or img1.size[1] != img2.size[1]:
+    with open('demo_failure.txt', 'w') as f:
+        f.write(f'Error: bad parameters: Input images must have the same size: {img1[0]}x{img1[1]} - {img2[0]}x{img2[1]}')
+
+elif len(img1.getbands()) != len(img2.getbands()):
+    with open('demo_failure.txt', 'w') as f:
+        f.write('Input images must have the same number of channels')
 
 
 #run algo
@@ -35,9 +50,16 @@ p3 = subprocess.run(['generate_output', 'input_0.png', 'input_1.png', 'transform
 
 
 #create tables
-with open('transform.mat', 'r') as f, open('input_2.mat', 'r') as f1:
+
+if os.path.isfile('input_2.mat'):
+    with open('input_2.mat', 'r') as f:
+        gT_trans = f.readlines()[1]
+else:
+    gT_trans = "2 \n -N/A -"
+
+
+with open('transform.mat', 'r') as f:
     computed_trans = f.readlines()[1]
-    gT_trans = f1.readlines()[1]
 
 # Extract values from the strings
 computed_trans_values = [float(value) for value in computed_trans.split()]
