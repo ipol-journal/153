@@ -54,21 +54,12 @@ p3 = subprocess.run(['generate_output', 'input_0.png', 'input_1.png', 'transform
 
 #create tables
 
-'''
-if os.path.isfile('input_2.mat'): #decode and write the encoding for tiff files beacuse .mat extension in cp2
-    with open('input_2.mat', 'r') as f:
-        gT_trans = f.readlines()[1]
-else:
+try:
+    if os.path.isfile('input_2.mat'):
+        with open('input_2.mat', 'r') as f:
+            gT_trans = f.readlines()[1]
+except UnicodeDecodeError:
     gT_trans = "2 \n -N/A -"
-'''
-
-with open('input_2.mat', 'rb') as f:
-    raw_data = f.read()
-    result = chardet.detect(raw_data)
-    encoding = result['encoding']
-
-with open('input_2.mat', 'r', encoding=encoding) as f:
-    gT_trans = f.readlines()[1]
 
 
 
@@ -77,7 +68,10 @@ with open('transform.mat', 'r') as f1:
 
 # Extract values from the strings
 computed_trans_values = [float(value) for value in computed_trans.split()]
-gt_trans_values = [float(value) for value in gT_trans.split()]
+try:
+    gt_trans_values = [float(value) for value in gT_trans.split()]
+except ValueError:
+    gt_trans_values = ' '
 
 # Check if both sets of values are equal
 values_equal = computed_trans_values == gt_trans_values
