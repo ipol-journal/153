@@ -28,7 +28,7 @@ img2 = Image.open('input_1.png')
     
 if img1.size[0] != img2.size[0] or img1.size[1] != img2.size[1]:
     with open('demo_failure.txt', 'w') as f:
-        f.write(f'Error: bad parameters: Input images must have the same size: {img1[0]}x{img1[1]} - {img2[0]}x{img2[1]}')
+        f.write(f'Error: bad parameters: Input images must have the same size: {img1.size[0]}x{img1.size[1]} - {img2.size[0]}x{img2.size[1]}')
 
 elif len(img1.getbands()) != len(img2.getbands()):
     with open('demo_failure.txt', 'w') as f:
@@ -58,8 +58,8 @@ else:
     gT_trans = "2 \n -N/A -"
 
 
-with open('transform.mat', 'r') as f:
-    computed_trans = f.readlines()[1]
+with open('transform.mat', 'r') as f1:
+    computed_trans = f1.readlines()[1]
 
 # Extract values from the strings
 computed_trans_values = [float(value) for value in computed_trans.split()]
