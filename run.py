@@ -29,10 +29,12 @@ img2 = Image.open('input_1.png')
 if img1.size[0] != img2.size[0] or img1.size[1] != img2.size[1]:
     with open('demo_failure.txt', 'w') as f:
         f.write(f'Error: bad parameters: Input images must have the same size: {img1.size[0]}x{img1.size[1]} - {img2.size[0]}x{img2.size[1]}')
+    sys.exit(0)
 
 elif len(img1.getbands()) != len(img2.getbands()):
     with open('demo_failure.txt', 'w') as f:
         f.write('Input images must have the same number of channels')
+    sys.exit(0)
 
 
 #run algo
