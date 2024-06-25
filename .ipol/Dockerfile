@@ -22,4 +22,6 @@ ENV HOME /home/ipol
 # chmod 777 so that any user can use the HOME, in case the docker is run with -u 1001:1001
 RUN groupadd -g 1000 ipol && useradd -m -u 1000 -g 1000 ipol -d $HOME && chmod -R 777 $HOME
 RUN apt-get update && apt-get install -y python3-tabulate
+# Install chardet using pip
+RUN pip install chardet
 USER ipol
