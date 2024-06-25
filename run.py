@@ -5,6 +5,7 @@ import argparse
 import sys
 import os
 from PIL import Image
+import chardet
 tabulate_path = "/usr/lib/python3/dist-packages"
 sys.path.append(tabulate_path)
 from tabulate import tabulate
@@ -31,7 +32,7 @@ if img1.size[0] != img2.size[0] or img1.size[1] != img2.size[1]:
         f.write(f'Error: bad parameters: Input images must have the same size: {img1.size[0]}x{img1.size[1]} - {img2.size[0]}x{img2.size[1]}')
     sys.exit(0)
 
-elif len(img1.getbands()) != len(img2.getbands()):
+if len(img1.getbands()) != len(img2.getbands()):
     with open('demo_failure.txt', 'w') as f:
         f.write('Input images must have the same number of channels')
     sys.exit(0)
@@ -53,11 +54,22 @@ p3 = subprocess.run(['generate_output', 'input_0.png', 'input_1.png', 'transform
 
 #create tables
 
-if os.path.isfile('input_2.mat'):
+'''
+if os.path.isfile('input_2.mat'): #decode and write the encoding for tiff files beacuse .mat extension in cp2
     with open('input_2.mat', 'r') as f:
         gT_trans = f.readlines()[1]
 else:
     gT_trans = "2 \n -N/A -"
+'''
+
+with open('input_2.mat', 'rb') as f:
+    raw_data = f.read()
+    result = chardet.detect(raw_data)
+    encoding = result['encoding']
+
+with open('input_2.mat', 'r', encoding=encoding) as f:
+    gT_trans = f.readlines()[1]
+
 
 
 with open('transform.mat', 'r') as f1:
