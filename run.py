@@ -59,7 +59,7 @@ try:
         with open('input_2.mat', 'r') as f:
             gT_trans = f.readlines()[1]
 except UnicodeDecodeError:
-    gT_trans = ""
+    gT_trans = "-"
 
 
 with open('transform.mat', 'r') as f1:
@@ -140,7 +140,7 @@ format_computed_matrix = "\n".join(["\t".join(computed_matrix[i:i+3]) for i in r
 format_gT_matrix = "\n".join(["\t".join(gt_matrix[i:i+3]) for i in range(0, len(gt_matrix), 3)])
 
 # Write the formatted matrices to text files
-with open("computed_matrix_file", "w") as file:
+with open("computed_matrix_file.txt", "w") as file:
     file.write("Computed Matrix:\n")
     file.write(format_computed_matrix)
     file.write("\n\n")
